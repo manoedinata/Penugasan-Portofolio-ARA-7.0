@@ -16,6 +16,10 @@ from app.models.peserta import Peserta, PesertaBase, PesertaEdit
 app = FastAPI(title=settings.app_name)
 
 
+@app.get("/", include_in_schema=False)
+def read_root():
+    return {"Hello world": "Go to /docs to see the API documentation"}
+
 @app.get("/peserta/")
 def get_all_peserta(
     session: SessionDep,
