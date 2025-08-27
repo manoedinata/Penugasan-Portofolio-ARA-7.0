@@ -7,11 +7,13 @@ from typing import Annotated
 from fastapi import FastAPI, HTTPException, Query
 from sqlmodel import select
 
+from settings import settings
+
 # Import database utils AND models
 from database import SessionDep
 from models.peserta import Peserta, PesertaBase, PesertaEdit
 
-app = FastAPI()
+app = FastAPI(title=settings.app_name)
 
 
 @app.get("/peserta/")
