@@ -7,7 +7,7 @@ from alembic import context
 
 # Models
 from sqlmodel import SQLModel
-from models.peserta import Peserta
+from app.models.peserta import Peserta
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
