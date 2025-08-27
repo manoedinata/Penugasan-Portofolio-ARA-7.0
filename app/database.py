@@ -2,7 +2,7 @@ from sqlmodel import SQLModel, Session, create_engine
 from typing import Annotated
 from fastapi import Depends
 
-from settings import settings
+from app.settings import settings
 
 # Database setup
 if settings.database_url.startswith("sqlite"):

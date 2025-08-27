@@ -7,11 +7,11 @@ from typing import Annotated
 from fastapi import FastAPI, HTTPException, Query
 from sqlmodel import select
 
-from settings import settings
+from app.settings import settings
 
 # Import database utils AND models
-from database import SessionDep
-from models.peserta import Peserta, PesertaBase, PesertaEdit
+from app.database import SessionDep
+from app.models.peserta import Peserta, PesertaBase, PesertaEdit
 
 app = FastAPI(title=settings.app_name)
 
