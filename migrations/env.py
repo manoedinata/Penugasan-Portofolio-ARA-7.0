@@ -5,8 +5,9 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from sqlmodel import SQLModel    # UPDATED
-from models.peserta import PesertaDB # UPDATED
+# Models
+from sqlmodel import SQLModel
+from models.peserta import Peserta
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

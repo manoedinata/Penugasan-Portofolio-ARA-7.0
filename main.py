@@ -8,9 +8,8 @@ from fastapi import FastAPI, HTTPException, Query
 from sqlmodel import select
 
 # Import database utils AND models
-# Models need to be imported to register them with SQLModel.metadata
 from database import SessionDep
-from models.peserta import Peserta, PesertaDB
+from models.peserta import Peserta, PesertaBase, PesertaEdit
 
 app = FastAPI()
 
@@ -20,21 +19,21 @@ def get_all_peserta(
     session: SessionDep,
     offset: int = 0,
     limit: Annotated[int, Query(le=100)] = 100,
-) -> list[PesertaDB]:
-    peserta = session.exec(select(PesertaDB).offset(offset).limit(limit)).all()
+) -> list[Peserta]:
+    peserta = session.exec(select(Peserta).offset(offset).limit(limit)).all()
     return peserta
 
 @app.post("/peserta/")
-def add_peserta(peserta: Peserta, session: SessionDep) -> PesertaDB:
-    peserta = PesertaDB.model_validate(peserta)
+def add_peserta(peserta: PesertaBase, session: SessionDep) -> Peserta:
+    peserta = Peserta.model_validate(peserta)
     session.add(peserta)
     session.commit()
     session.refresh(peserta)
     return peserta
 
 @app.get("/peserta/{peserta_id}")
-def get_peserta(peserta_id: int, session: SessionDep) -> PesertaDB:
-    peserta = session.get(PesertaDB, peserta_id)
+def get_peserta(peserta_id: int, session: SessionDep) -> Peserta:
+    peserta = session.get(Peserta, peserta_id)
     if not peserta:
         raise HTTPException(status_code=404, detail="Peserta tidak ditemukan")
     return peserta
@@ -42,23 +41,26 @@ def get_peserta(peserta_id: int, session: SessionDep) -> PesertaDB:
 # NOTE: Untuk edit peserta, seharusnya menggunakan method PUT atau PATCH
 # namun request dari website, terutama dari form, biasanya hanya mendukung GET & POST
 # Bisa diubah menjadi PATCH.
+# @app.patch("/peserta/{peserta_id}")
 @app.post("/peserta/{peserta_id}")
-def edit_peserta(peserta_id: int, peserta: Peserta, session: SessionDep) -> PesertaDB:
-    peserta_data = session.get(PesertaDB, peserta_id)
+def edit_peserta(peserta_id: int, peserta: PesertaEdit, session: SessionDep) -> Peserta:
+    peserta_data = session.get(Peserta, peserta_id)
     if not peserta:
         raise HTTPException(status_code=404, detail="Peserta tidak ditemukan")
 
+    # Convert peserta model to dict, excluding unset values
     peserta_updated = peserta.model_dump(exclude_unset=True)
+    # Update peserta_data with new values
     peserta_data.sqlmodel_update(peserta_updated)
 
     session.add(peserta_data)
     session.commit()
     session.refresh(peserta_data)
-    return peserta
+    return peserta_data
 
 @app.delete("/peserta/{peserta_id}")
 def delete_peserta(peserta_id: int, session: SessionDep):
-    peserta = session.get(PesertaDB, peserta_id)
+    peserta = session.get(Peserta, peserta_id)
     if not peserta:
         raise HTTPException(status_code=404, detail="Peserta tidak ditemukan")
     session.delete(peserta)

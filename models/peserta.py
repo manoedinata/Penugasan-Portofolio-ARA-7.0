@@ -1,8 +1,12 @@
 from sqlmodel import Field, SQLModel
 
-class Peserta(SQLModel):
+class PesertaBase(SQLModel):
+    nama: str
+    sekolah: str
+
+class PesertaEdit(SQLModel):
     nama: str | None = None
     sekolah: str | None = None
 
-class PesertaDB(Peserta, table=True):
+class Peserta(PesertaBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
