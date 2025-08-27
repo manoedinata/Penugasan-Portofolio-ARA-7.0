@@ -9,16 +9,10 @@ from sqlmodel import select
 
 # Import database utils AND models
 # Models need to be imported to register them with SQLModel.metadata
-from database import create_db_and_tables, get_session, SessionDep
+from database import SessionDep
 from models.peserta import Peserta, PesertaDB
 
 app = FastAPI()
-
-
-# FIXME: This will be unneeded when Alembic is used
-@app.on_event("startup")
-def on_startup():
-    create_db_and_tables()
 
 
 @app.get("/peserta/")
@@ -26,12 +20,13 @@ def get_all_peserta(
     session: SessionDep,
     offset: int = 0,
     limit: Annotated[int, Query(le=100)] = 100,
-) -> list[Peserta]:
+) -> list[PesertaDB]:
     peserta = session.exec(select(PesertaDB).offset(offset).limit(limit)).all()
     return peserta
 
 @app.post("/peserta/")
 def add_peserta(peserta: Peserta, session: SessionDep) -> PesertaDB:
+    peserta = PesertaDB.model_validate(peserta)
     session.add(peserta)
     session.commit()
     session.refresh(peserta)

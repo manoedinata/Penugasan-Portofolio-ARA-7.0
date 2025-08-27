@@ -9,11 +9,6 @@ sqlite_url = f"sqlite:///{sqlite_file_name}"
 connect_args = {"check_same_thread": False}
 engine = create_engine(sqlite_url, connect_args=connect_args)
 
-# Function: Initialize DB
-# FIXME: This will be unneeded when Alembic is used
-def create_db_and_tables():
-    SQLModel.metadata.create_all(engine)
-
 # Function: Yield database session
 def get_session():
     with Session(engine) as session:
