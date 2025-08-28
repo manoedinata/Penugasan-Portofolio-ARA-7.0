@@ -97,12 +97,21 @@
         }
 
         async function editPeserta(id, nama, sekolah) {
+          //   Ugly way to avoid sending empty fields
+          var body = {};
+          if (nama != "" && nama != null) {
+            body["nama"] = nama;
+          }
+          if (sekolah != "" && sekolah != null) {
+            body["sekolah"] = sekolah;
+          }
+
           const response = await fetch(`/peserta/${id}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ nama, sekolah }),
+            body: JSON.stringify(body),
           });
           return response.ok;
         }
