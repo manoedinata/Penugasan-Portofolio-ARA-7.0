@@ -8,6 +8,30 @@ Aplikasi ini menjadi penugasan portofolio pendaftaran staf [ARA 7.0](https://ins
 
 Dokumentasi API route dapat dilihat di [/docs](https://penugasan-porto-ara70.mdinata.my.id/docs).
 
+## Directory Structure
+
+```
+├── alembic.ini  ---> Konfigurasi Alembic untuk database migration
+├── app
+│   ├── __init__.py
+│   ├── database.py  ---> Konfigurasi database
+│   ├── main.py  ---> Kode aplikasi utama
+│   ├── models
+│   │   └── peserta.py --> Models untuk data validation dan input ke ORM
+│   └── settings.py ---> Konfigurasi aplikasi
+├── main.py
+├── migrations ---> Histori database migration untuk pembuatan tabel di database
+│   ├── README
+│   ├── env.py
+│   ├── script.py.mako
+│   └── versions
+│       ├── 6200c3a87c2d_initialize_tables.py
+│       └── __pycache__
+│           └── 6200c3a87c2d_initialize_tables.cpython-312.pyc
+├── requirements.txt
+└── vercel.json
+```
+
 ## Cara Menjalankan
 
 ```bash
