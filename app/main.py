@@ -13,14 +13,19 @@ from app.settings import settings
 from app.database import SessionDep
 from app.models.peserta import Peserta, PesertaBase, PesertaEdit
 
-app = FastAPI(title=settings.app_name)
+openapi_tags = {
+    "name": "Peserta",
+    "description": "Operasi CRUD peserta.",
+},
+
+app = FastAPI(title=settings.app_name, openapi_tags=openapi_tags)
 
 
 @app.get("/", include_in_schema=False)
 def read_root():
     return {"Hello world": "Go to /docs to see the API documentation"}
 
-@app.get("/peserta/")
+@app.get("/peserta/", tags=["Peserta"])
 def get_all_peserta(
     session: SessionDep,
     offset: int = 0,
@@ -29,7 +34,7 @@ def get_all_peserta(
     peserta = session.exec(select(Peserta).offset(offset).limit(limit)).all()
     return peserta
 
-@app.post("/peserta/")
+@app.post("/peserta/", tags=["Peserta"])
 def add_peserta(peserta: PesertaBase, session: SessionDep) -> Peserta:
     peserta = Peserta.model_validate(peserta)
     session.add(peserta)
@@ -37,7 +42,7 @@ def add_peserta(peserta: PesertaBase, session: SessionDep) -> Peserta:
     session.refresh(peserta)
     return peserta
 
-@app.get("/peserta/{peserta_id}")
+@app.get("/peserta/{peserta_id}", tags=["Peserta"])
 def get_peserta(peserta_id: int, session: SessionDep) -> Peserta:
     peserta = session.get(Peserta, peserta_id)
     if not peserta:
@@ -48,7 +53,7 @@ def get_peserta(peserta_id: int, session: SessionDep) -> Peserta:
 # namun request dari website, terutama dari form, biasanya hanya mendukung GET & POST
 # Bisa diubah menjadi PATCH.
 # @app.patch("/peserta/{peserta_id}")
-@app.post("/peserta/{peserta_id}")
+@app.post("/peserta/{peserta_id}", tags=["Peserta"])
 def edit_peserta(peserta_id: int, peserta: PesertaEdit, session: SessionDep) -> Peserta:
     peserta_data = session.get(Peserta, peserta_id)
     if not peserta:
@@ -64,7 +69,7 @@ def edit_peserta(peserta_id: int, peserta: PesertaEdit, session: SessionDep) -> 
     session.refresh(peserta_data)
     return peserta_data
 
-@app.delete("/peserta/{peserta_id}")
+@app.delete("/peserta/{peserta_id}", tags=["Peserta"])
 def delete_peserta(peserta_id: int, session: SessionDep):
     peserta = session.get(Peserta, peserta_id)
     if not peserta:
