@@ -4,8 +4,10 @@
 # Hendra Manudinata - 5027251051
 
 from typing import Annotated
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
 from sqlmodel import select
+from fastapi.templating import Jinja2Templates # For web UI only
+from fastapi.responses import HTMLResponse # For web UI only
 
 from app.settings import settings
 
@@ -19,11 +21,14 @@ openapi_tags = {
 },
 
 app = FastAPI(title=settings.app_name, openapi_tags=openapi_tags)
+templates = Jinja2Templates(directory="app/templates") # For web UI only
 
 
-@app.get("/", include_in_schema=False)
-def read_root():
-    return {"Hello world": "Go to /docs to see the API documentation"}
+@app.get("/", include_in_schema=False, response_class=HTMLResponse)
+def home(request: Request):
+    return templates.TemplateResponse(
+        request=request, name="home.html"
+    )
 
 @app.get("/peserta/", tags=["Peserta"])
 def get_all_peserta(
