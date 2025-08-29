@@ -1,8 +1,17 @@
 # Penugasan Portofolio ARA 7.0 - IT Dev Backend
 
-Aplikasi _Create Read Update Delete_ (CRUD) sederhana berbasis FastAPI & SQLModel, dengan database SQL seperti PostgreSQL.
+Aplikasi _Create, Read, Update, Delete_ (CRUD) sederhana berbasis FastAPI & SQLModel, dengan database SQL seperti PostgreSQL.
 
 Aplikasi ini menjadi penugasan portofolio pendaftaran staf [ARA 7.0](https://instagram.com/ara_its) divisi IT Dev, bagian Backend.
+
+## Kenapa FastAPI? Bukan Flask?
+
+Pada awalnya saya ingin menggunakan Flask karena lebih terbiasa. Namun, karena FastAPI saat ini semakin
+_mature_ dan performanya juga _on par_ dengan framework JavaScript lain (source: _benchmark_ oleh FastAPI), penugasan
+ini pada akhirnya menggunakan FastAPI. Dan juga, FastAPI menyediakan dokumentasi _API route_ secara otomatis berbasis
+Swagger & OpenAPI spec, sehingga memudahkan untuk membuat REST API.
+
+Namun, jika ditanya, saya lebih memilih Flask. :D
 
 ## API Docs
 
