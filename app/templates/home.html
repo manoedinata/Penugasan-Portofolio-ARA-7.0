@@ -81,6 +81,30 @@
     </main>
 
     <footer>
+      <div class="py-3 mt-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+          <li class="nav-item">
+            <a
+              href="{{ url_for('home') }}"
+              class="nav-link px-2 text-body-secondary"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              href="{{ request.app.docs_url }}"
+              class="nav-link px-2 text-body-secondary"
+              >API Docs</a
+            >
+          </li>
+        </ul>
+        <p class="text-center text-body-secondary">
+          © 2025 Hendra Manudinata
+          <br />
+          All Rights Reverse-engineered :D
+        </p>
+      </div>
+
       <script>
         function checkIfEmpty(elements) {
           //   Ugly way to avoid sending empty fields
