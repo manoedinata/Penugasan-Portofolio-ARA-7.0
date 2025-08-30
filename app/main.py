@@ -13,7 +13,7 @@ from app.settings import settings
 
 # Import database utils AND models
 from app.database import SessionDep
-from app.models.peserta import Peserta, PesertaBase, PesertaEdit
+from app.models.peserta import Peserta, PesertaAdd, PesertaEdit
 
 openapi_tags = {
     "name": "Peserta",
@@ -40,7 +40,7 @@ def get_all_peserta(
     return peserta
 
 @app.post("/peserta/", tags=["Peserta"])
-def add_peserta(peserta: PesertaBase, session: SessionDep) -> Peserta:
+def add_peserta(peserta: PesertaAdd, session: SessionDep) -> Peserta:
     peserta = Peserta.model_validate(peserta)
     session.add(peserta)
     session.commit()

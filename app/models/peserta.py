@@ -4,6 +4,9 @@ class PesertaBase(SQLModel):
     nama: str
     sekolah: str
 
+class PesertaAdd(PesertaBase):
+    pass
+
 class PesertaEdit(SQLModel):
     nama: str | None = None
     sekolah: str | None = None
