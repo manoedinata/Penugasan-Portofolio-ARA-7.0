@@ -82,6 +82,17 @@
 
     <footer>
       <script>
+        function checkIfEmpty(elements) {
+          //   Ugly way to avoid sending empty fields
+          let body = {};
+          for (let i = 0; i < elements.length; i++) {
+            if (elements[i][1] != "" && elements[i][1] != null) {
+              body[elements[i][0]] = elements[i][1];
+            }
+          }
+          return body;
+        }
+
         async function fetchPeserta() {
           const response = await fetch("/peserta/");
           const data = await response.json();
@@ -100,25 +111,30 @@
         }
 
         async function addPeserta(nama, sekolah) {
+          var body = checkIfEmpty([
+            ["nama", nama],
+            ["sekolah", sekolah],
+          ]);
+          if (!body.nama || !body.sekolah) {
+            alert("Nama dan sekolah wajib diisi!");
+            return false;
+          }
+
           const response = await fetch("/peserta/", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ nama, sekolah }),
+            body: JSON.stringify(body),
           });
           return response.ok;
         }
 
         async function editPeserta(id, nama, sekolah) {
-          //   Ugly way to avoid sending empty fields
-          var body = {};
-          if (nama != "" && nama != null) {
-            body["nama"] = nama;
-          }
-          if (sekolah != "" && sekolah != null) {
-            body["sekolah"] = sekolah;
-          }
+          var body = checkIfEmpty([
+            ["nama", nama],
+            ["sekolah", sekolah],
+          ]);
 
           const response = await fetch(`/peserta/${id}`, {
             method: "POST",
